@@ -1,0 +1,10 @@
+  [
+    {
+      "Categoria": "Treinamento",
+      "Codproduto": 1,
+      "Nome": "Exemplo Cadastro Produto",
+      "Quantidade": 1,
+      "Valorcusto": 0.1,
+      "Valorvenda": 0.1
+    }
+  ]
