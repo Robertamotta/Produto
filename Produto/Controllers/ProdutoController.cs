@@ -19,7 +19,7 @@ namespace Produto.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Método utilizado para retornar os dados do usuário
+        /// Método utilizado para retornar os dados do Produto
         /// </summary>
         /// <remarks>Dados retornados, filtrado pelo codproduto do usuário desejado</remarks>
         /// <param name="codproduto"></param>
@@ -30,5 +30,11 @@ namespace Produto.WebAPI.Controllers
 
             return Ok(mediator.Send(new GetDadosProduto(codproduto)));
         }
+
     }
 }
+
+
+       
+    
+

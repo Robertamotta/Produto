@@ -23,5 +23,9 @@
     <ProjectReference Include="..\Produto.Application\Estoque.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 
 </Project>

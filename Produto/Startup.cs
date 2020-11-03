@@ -42,7 +42,7 @@ namespace Estoque.WebAPI.Controllers
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
                     {
-                        Name = "Roberta Mota",
+                        Name = "Roberta Motta",
                         Email = "robertamotta.13@gmail.com",
                        // Url = new Uri("https://www.squadra.com.br/"),
                     },
@@ -87,8 +87,6 @@ namespace Estoque.WebAPI.Controllers
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "EstoqueWeb v1");
             });
-
- //           app.UseMvc();
 
             app.UseRouting();
 
