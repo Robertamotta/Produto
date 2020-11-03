@@ -11,7 +11,7 @@ using System.IO;
 using System.Reflection;
 
 
-namespace Estoque.WebAPI
+namespace Estoque.WebAPI.Controllers
 {
     public class Startup
     {
@@ -62,6 +62,11 @@ namespace Estoque.WebAPI
 
         }
 
+        private void IncludeXmlComments(string xmlPath)
+        {
+            //throw new NotImplementedException();
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -80,7 +85,7 @@ namespace Estoque.WebAPI
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Financial");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EstoqueWeb v1");
             });
 
  //           app.UseMvc();
