@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +28,8 @@ namespace Estoque.WebAPI.Controllers
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
             services.AddControllers();
+            services.AddDbContext<DbContext>(options =>
+                  options.UseSqlServer("Server=tcp:estoque-infrastruture-db-server.database.windows.net,1433;Initial Catalog=Estoque.Infrastruture_db;Persist Security Info=False;User ID=treinamentormp;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;;"));
 
             //TODO: Resolver problema de Injeção de Dependência, e registro do Mediator
             //services.UseFinancialDbContext(Configuration).UseServicesHandlers();

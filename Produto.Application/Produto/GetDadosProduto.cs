@@ -13,6 +13,7 @@ namespace Estoque.Application.Produto
         public GetDadosProduto(int Codproduto)
         {
             this.Codproduto = Codproduto;
+
         }
     }
 }
