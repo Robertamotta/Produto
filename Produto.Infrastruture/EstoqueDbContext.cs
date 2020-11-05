@@ -4,5 +4,6 @@ namespace Estoque.Infrastruture
 {
     internal class EstoqueDbContext : DbContext
     {
+
     }
 }
