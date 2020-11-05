@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,8 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
-
+using System.Text;
+using Estoque.WebAPI.Data;
 
 namespace Estoque.WebAPI.Controllers
 {
@@ -22,16 +24,36 @@ namespace Estoque.WebAPI.Controllers
         }
 
         public IConfiguration Configuration { get; }
+        public IServiceCollection Conn { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
             services.AddControllers();
-            services.AddDbContext<DbContext>(options =>
-                  options.UseSqlServer("Server=tcp:estoque-infrastruture-db-server.database.windows.net,1433;Initial Catalog=Estoque.Infrastruture_db;Persist Security Info=False;User ID=treinamentormp;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;;"));
+            //[inicio]
+            //Conn = services.AddDbContext<DbContext>(options =>
+            //      options.UseSqlServer("Server=tcp:estoque-infrastruture-db-server.database.windows.net,1433;Initial Catalog=Estoque.Infrastruture_db;Persist Security Info=False;User ID=treinamentormp;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;;"));
 
-            //TODO: Resolver problema de Injeção de Dependência, e registro do Mediator
+            //SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            //builder.ConnectionString = "Server = tcp:estoque - infrastruture - db - server.database.windows.net,1433; Initial Catalog = Estoque.Infrastruture_db; Persist Security Info = False; User ID = treinamentormp; Password = Rmp251702; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;";
+
+            //builder.DataSource = "estoque-infrastruture-db-server.database.windows.net";
+            //builder.UserID = "treinamentormp";
+            //builder.Password = "Rmp251702";
+            //builder.InitialCatalog = "Estoque.Infrastruture_db";
+
+            //using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+            //{
+            //    connection.Open();
+
+            // }
+
+            var ConnectionString = Configuration.GetConnectionString("SouthwindDatabase");
+            services.AddDbContext<DbContext>(options =>
+                options.UseSqlServer(ConnectionString)
+            );
+            //TODO: Resolver problema de Inje??o de Depend?ncia, e registro do Mediator
             //services.UseFinancialDbContext(Configuration).UseServicesHandlers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -61,6 +83,9 @@ namespace Estoque.WebAPI.Controllers
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 IncludeXmlComments(xmlPath);
             });
+
+            services.AddDbContext<ProdutoContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ProdutoContext")));
 
 
         }

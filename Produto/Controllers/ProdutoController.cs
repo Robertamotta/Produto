@@ -1,120 +1,110 @@
-﻿using Estoque.Application.Produto;
-using Estoque.Application.ValueObject;
-using MediatR;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.EntityFrameworkCore;
+using Estoque.WebAPI.Data;
+using Estoque.WebAPI.Models;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?Linkcodproduto=397860
-
-namespace Produto.WebAPI.Controllers
+namespace Estoque.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private readonly IMediator mediator;
+        private readonly ProdutoContext _context;
 
-        public ProdutoController(IMediator _mediator)
+        public ProdutoController(ProdutoContext context)
         {
-            mediator = _mediator;
+            _context = context;
         }
 
-        /// <summary>
-        /// Método utilizado para retornar os dados do Produto
-        /// </summary>
-        /// <remarks>Dados retornados, filtrado pelo codproduto do usuário desejado</remarks>
-        /// <param name="codproduto"></param>
-        /// <returns></returns>
-        [HttpGet("{codproduto}")]
-        public ActionResult<ProdutoVO> Get(int codproduto)
+        // GET: api/Produtoes
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Produto>>> GetProduto()
         {
-
-            return Ok(mediator.Send(new GetDadosProduto(codproduto)));
+            return await _context.Produto.ToListAsync();
         }
 
-        /// <summary>
-        /// Deletes a specific TodoItem.
-        /// </summary>
-        /// <param name="codproduto"></param> 
-        //[HttpGet("{codproduto}")]
-        //public codproduto Get(int codproduto)
-        //{
-        //    return GerarLista()
-        //       // .FirstOrDefault(Produto => codproduto == codproduto); //<- Expressão Lambda
-        //}
-
-        private object GerarLista()
+        // GET: api/Produtoes/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Produto>> GetProduto(int id)
         {
-            throw new NotImplementedException();
+            var produto = await _context.Produto.FindAsync(id);
+
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            return produto;
         }
 
-        [HttpDelete("{codproduto}")]
-        public IActionResult Delete(int codproduto)
+        // PUT: api/Produtoes/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProduto(int id, Produto produto)
         {
-            //[alterar] incluir comando apos configuração banco de dados
-            //           var todo = _context.TodoItems.Find(id);
+            if (id != produto.CodProduto)
+            {
+                return BadRequest();
+            }
 
-            //           if (todo == null)
-            //           {
-            //               return NotFound();
-            //}
+            _context.Entry(produto).State = EntityState.Modified;
 
-            //_context.TodoItems.Remove(todo);
-            //_context.SaveChanges();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProdutoExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return NoContent();
         }
 
-        /// <summary>
-        /// Creates a TodoItem.
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     POST /Todo
-        ///     {
-        ///        "id": 1,
-        ///        "name": "Item1",
-        ///        "isComplete": true
-        ///     }
-        ///
-        /// </remarks>
-        /// <param name="codproduto"></param>
-        /// <returns>A newly created TodoItem</returns>
-        /// <response code="201">Returns the newly created item</response>
-        /// <response code="400">If the item is null</response>            
+        // POST: api/Produtoes
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<ProdutoVO> Create(ProdutoVO item)
+        public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
-            //[alterar] incluir comando apos configuração banco de dados
+            _context.Produto.Add(produto);
+            await _context.SaveChangesAsync();
 
-            //_context.TodoItems.Add(item);
-            //_context.SaveChanges();
+            return CreatedAtAction("GetProduto", new { id = produto.CodProduto }, produto);
+        }
 
-            //           return CreatedAtRoute("GetTodo", new { id = item.ProdutoVO}, item);
-            return NoContent();
+        // DELETE: api/Produtoes/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Produto>> DeleteProduto(int id)
+        {
+            var produto = await _context.Produto.FindAsync(id);
+            if (produto == null)
+            {
+                return NotFound();
+            }
 
-            //[HttpPut("{id}")]
-            //public codproduto Put(int id, [FromBody]  codproduto contaPF)
-            //{
-            //    var conta = Get(id);
+            _context.Produto.Remove(produto);
+            await _context.SaveChangesAsync();
 
-            //    conta.Agencia = contaPF.Agencia;
-            //    conta.Conta = contaPF.Conta;
-            //    conta.TipoConta = contaPF.TipoConta;
-            //    conta.NomeCompleto = contaPF.NomeCompleto;
+            return produto;
+        }
 
-            // return ;
+        private bool ProdutoExists(int id)
+        {
+            return _context.Produto.Any(e => e.CodProduto == id);
         }
     }
-
 }
-
-
-
-
-
-
