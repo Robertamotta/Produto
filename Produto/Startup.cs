@@ -35,21 +35,21 @@ namespace Estoque.WebAPI.Controllers
             //Conn = services.AddDbContext<DbContext>(options =>
             //      options.UseSqlServer("Server=tcp:estoque-infrastruture-db-server.database.windows.net,1433;Initial Catalog=Estoque.Infrastruture_db;Persist Security Info=False;User ID=treinamentormp;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;;"));
 
-            //SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            //builder.ConnectionString = "Server = tcp:estoque - infrastruture - db - server.database.windows.net,1433; Initial Catalog = Estoque.Infrastruture_db; Persist Security Info = False; User ID = treinamentormp; Password = Rmp251702; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;";
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.ConnectionString = "Server = tcp:estoque - infrastruture - db - server.database.windows.net,1433; Initial Catalog = Estoque.Infrastruture_db; Persist Security Info = False; User ID = treinamentormp; Password = Rmp251702; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;";
 
-            //builder.DataSource = "estoque-infrastruture-db-server.database.windows.net";
-            //builder.UserID = "treinamentormp";
-            //builder.Password = "Rmp251702";
-            //builder.InitialCatalog = "Estoque.Infrastruture_db";
+            builder.DataSource = "estoque-infrastruture-db-server.database.windows.net";
+            builder.UserID = "treinamentormp";
+            builder.Password = "Rmp251702";
+            builder.InitialCatalog = "Estoque.Infrastruture_db";
 
-            //using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
-            //{
-            //    connection.Open();
+            using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+            {
+                connection.Open();
 
-            // }
+             }
 
-            var ConnectionString = Configuration.GetConnectionString("SouthwindDatabase");
+            var ConnectionString = Configuration.GetConnectionString("ConexaoMySql");
             services.AddDbContext<DbContext>(options =>
                 options.UseSqlServer(ConnectionString)
             );
@@ -84,8 +84,11 @@ namespace Estoque.WebAPI.Controllers
                 IncludeXmlComments(xmlPath);
             });
 
-            services.AddDbContext<ProdutoContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ProdutoContext")));
+            services.AddDbContext<EstoqueContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("EstoqueContext")));
+
+            //services.AddDbContext<ProdutoContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("ProdutoContext")));
 
 
         }

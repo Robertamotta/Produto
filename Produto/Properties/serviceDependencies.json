@@ -10,6 +10,10 @@
     "mssql2": {
       "type": "mssql",
       "connectionId": "ProdutoContext"
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "EstoqueContext"
     }
   }
 }
