@@ -12,48 +12,48 @@ namespace Estoque.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProdutoController : ControllerBase
+    public class UsuariosController : ControllerBase
     {
         private readonly EstoqueContext _context;
 
-        public ProdutoController(EstoqueContext context)
+        public UsuariosController(EstoqueContext context)
         {
             _context = context;
         }
 
-        // GET: api/Produto
+        // GET: api/Usuarios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Produto>>> GetProduto()
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
-            return await _context.Produto.ToListAsync();
+            return await _context.Usuario.ToListAsync();
         }
 
-        // GET: api/Produto/5
+        // GET: api/Usuarios/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Produto>> GetProduto(int id)
+        public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
-            var produto = await _context.Produto.FindAsync(id);
+            var usuario = await _context.Usuario.FindAsync(id);
 
-            if (produto == null)
+            if (usuario == null)
             {
                 return NotFound();
             }
 
-            return produto;
+            return usuario;
         }
 
-        // PUT: api/Produto/5
+        // PUT: api/Usuarios/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduto(int id, Produto produto)
+        public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
         {
-            if (id != produto.CodProduto)
+            if (id != usuario.IdUsuario)
             {
                 return BadRequest();
             }
 
-            _context.Entry(produto).State = EntityState.Modified;
+            _context.Entry(usuario).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace Estoque.WebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProdutoExists(id))
+                if (!UsuarioExists(id))
                 {
                     return NotFound();
                 }
@@ -74,37 +74,37 @@ namespace Estoque.WebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Produto
+        // POST: api/Usuarios
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Produto>> PostProduto(Produto produto)
+        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
-            _context.Produto.Add(produto);
+            _context.Usuario.Add(usuario);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduto", new { id = produto.CodProduto }, produto);
+            return CreatedAtAction("GetUsuario", new { id = usuario.IdUsuario }, usuario);
         }
 
-        // DELETE: api/Produto/5
+        // DELETE: api/Usuarios/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Produto>> DeleteProduto(int id)
+        public async Task<ActionResult<Usuario>> DeleteUsuario(int id)
         {
-            var produto = await _context.Produto.FindAsync(id);
-            if (produto == null)
+            var usuario = await _context.Usuario.FindAsync(id);
+            if (usuario == null)
             {
                 return NotFound();
             }
 
-            _context.Produto.Remove(produto);
+            _context.Usuario.Remove(usuario);
             await _context.SaveChangesAsync();
 
-            return produto;
+            return usuario;
         }
 
-        private bool ProdutoExists(int id)
+        private bool UsuarioExists(int id)
         {
-            return _context.Produto.Any(e => e.CodProduto == id);
+            return _context.Usuario.Any(e => e.IdUsuario == id);
         }
     }
 }

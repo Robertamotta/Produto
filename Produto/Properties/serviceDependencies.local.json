@@ -12,6 +12,10 @@
     "mssql2": {
       "type": "mssql.local",
       "connectionId": "ProdutoContext"
+    },
+    "mssql3": {
+      "type": "mssql.local",
+      "connectionId": "EstoqueContext"
     }
   }
 }
