@@ -17,5 +17,7 @@ namespace Estoque.WebAPI.Data
         public DbSet<Estoque.WebAPI.Models.Produto> Produto { get; set; }
 
         public DbSet<Estoque.WebAPI.Models.Categoria> Categoria { get; set; }
+
+        public DbSet<Estoque.WebAPI.Models.Usuario> Usuario { get; set; }
     }
 }

@@ -50,8 +50,8 @@ namespace Estoque.WebAPI.Controllers
              }
 
             var ConnectionString = Configuration.GetConnectionString("ConexaoMySql");
-            services.AddDbContext<DbContext>(options =>
-                options.UseSqlServer(ConnectionString)
+            services.AddDbContext<EstoqueContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
             //TODO: Resolver problema de Inje??o de Depend?ncia, e registro do Mediator
             //services.UseFinancialDbContext(Configuration).UseServicesHandlers();
