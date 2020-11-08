@@ -1,45 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Estoque.WebAPI.Models
 {
-    public class Categoria
+    public partial class Categoria
     {
-        [Key]
-        public int IdCategoria { get; set; }
+        public Categoria()
+        {
+            Produto = new HashSet<Produto>();
+        }
+        [Required]
+        public int CodCategoria { get; set; }
+        [StringLength(40, MinimumLength = 3)]
+        [Required]
         public string NomeCategoria { get; set; }
-        public string Status { get; set; }
- 
-        private readonly int id;
-        private readonly string nome;
-        private List<Produto> produtos = new List<Produto>();
- 
- 
-        public Categoria() => this.NomeCategoria = nome;
-
-
-        public Categoria(int IdCategoria, string nome)
-        {
-            this.IdCategoria = id;
-            this.NomeCategoria = nome;
-        }
-
- 
-        internal List<Produto> Produtos
-        {
-            get
-            {
-                return produtos;
-            }
-
-            set
-            {
-                produtos = value;
-            }
-        }
+        [Range(0,1)]
+        public int Status { get; set; }
+       public DateTime? DataInclusao { get; set; }
+       public DateTime? DataAlteracao { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Produto> Produto { get; set; }
     }
-
-    }
+}

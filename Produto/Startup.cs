@@ -12,7 +12,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Estoque.WebAPI.Data;
+using System.Text.RegularExpressions;
 
 namespace Estoque.WebAPI.Controllers
 {
@@ -47,45 +47,44 @@ namespace Estoque.WebAPI.Controllers
             {
                 connection.Open();
 
-             }
+            }
 
             var ConnectionString = Configuration.GetConnectionString("ConexaoMySql");
-            services.AddDbContext<EstoqueContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            services.AddDbContext<Estoque.WebAPI.Models.EstoqueInfrastruture_dbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("EstoqueInfrastruture_dbContext"))
             );
-            //TODO: Resolver problema de Inje??o de Depend?ncia, e registro do Mediator
-            //services.UseFinancialDbContext(Configuration).UseServicesHandlers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "Estoque API",
-                    Description = "API's do Trabalho Final",
-                    TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Roberta Motta",
-                        Email = "robertamotta.13@gmail.com",
-                       // Url = new Uri("https://www.squadra.com.br/"),
+               {
+                   c.SwaggerDoc("v1", new OpenApiInfo
+                   {
+                       Version = "v1",
+                       Title = "Estoque API",
+                       Description = "API's do Trabalho Final",
+                       TermsOfService = new Uri("https://example.com/terms"),
+                       Contact = new OpenApiContact
+                       {
+                           Name = "Roberta Motta",
+                           Email = "robertamotta.13@gmail.com",
+                        // Url = new Uri("https://www.squadra.com.br/"),
                     },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Use under LICX",
-                        Url = new Uri("https://example.com/license"),
-                    }
-                });
+                       License = new OpenApiLicense
+                       {
+                           Name = "Use under LICX",
+                           Url = new Uri("https://example.com/license"),
+                       }
+
+                   });
 
                 // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                IncludeXmlComments(xmlPath);
-            });
+                   var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                   var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                   c.IncludeXmlComments(xmlPath);
+               });
 
-            services.AddDbContext<EstoqueContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("EstoqueContext")));
+            //services.AddDbContext<EstoqueContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("EstoqueContext")));
 
             //services.AddDbContext<ProdutoContext>(options =>
             //        options.UseSqlServer(Configuration.GetConnectionString("ProdutoContext")));

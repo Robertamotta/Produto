@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Estoque.WebAPI.Data;
 using Estoque.WebAPI.Models;
+using System.ComponentModel.DataAnnotations;
+using FizzWare.NBuilder.Dates;
 
 namespace Estoque.WebAPI.Controllers
 {
@@ -14,14 +15,18 @@ namespace Estoque.WebAPI.Controllers
     [ApiController]
     public class CategoriasController : ControllerBase
     {
-        private readonly EstoqueContext _context;
+        private readonly EstoqueInfrastruture_dbContext _context;
 
-        public CategoriasController(EstoqueContext context)
+        public CategoriasController(EstoqueInfrastruture_dbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Categorias testeeee
+        /// <summary>
+        /// Busca todas Categorias Cadastradas
+        /// </summary>
+        /// <response code="200">Consulta feita com Sucesso</response>
+        // GET: api/Categorias
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
         {
@@ -29,10 +34,17 @@ namespace Estoque.WebAPI.Controllers
         }
 
         // GET: api/Categorias/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Categoria>> GetCategoria(int id)
+
+        /// <summary>
+        /// Busca Categoria por codigo
+        /// </summary>
+        /// <param CodCategoria="Codigo"></param>
+        /// <response code="200">Consulta feita com Sucesso</response>
+        /// <response code="404">Categoria não encontrada</response>
+        [HttpGet("{CodCategoria}")]
+        public async Task<ActionResult<Categoria>> GetCategoria(int CodCategoria)
         {
-            var categoria = await _context.Categoria.FindAsync(id);
+            var categoria = await _context.Categoria.FindAsync(CodCategoria);
 
             if (categoria == null)
             {
@@ -45,13 +57,28 @@ namespace Estoque.WebAPI.Controllers
         // PUT: api/Categorias/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategoria(int id, Categoria categoria)
+        /// <summary>
+        /// Altera uma categoria
+        /// </summary>
+        /// <remarks>
+        /// O Status da Categoria deverá ser 1 - Ativo ou 0 - Inativo.
+        /// </remarks>
+        /// <param CodCategoria="Codigo"></param>
+        /// <returns>Um registro de Categoria foi Alterado</returns>
+        /// <response code="201">Categoria Alterada com Sucesso</response>
+        /// <response code="400">Erro na Validação dos campos. Verifique os parametros.</response>  
+        /// <response code="409">Já existe uma Categoria incluida para esse código.</response>  
+
+
+        [HttpPut("{CodCategoria}")]
+        public async Task<IActionResult> PutCategoria(int CodCategoria, Categoria categoria)
         {
-            if (id != categoria.IdCategoria)
+            if (CodCategoria != categoria.CodCategoria)
             {
                 return BadRequest();
             }
+
+            categoria.DataAlteracao = DateTime.Today;
 
             _context.Entry(categoria).State = EntityState.Modified;
 
@@ -61,7 +88,7 @@ namespace Estoque.WebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoriaExists(id))
+                if (!CategoriaExists(CodCategoria))
                 {
                     return NotFound();
                 }
@@ -77,20 +104,57 @@ namespace Estoque.WebAPI.Controllers
         // POST: api/Categorias
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
+        /// <summary>
+        /// Inclui uma categoria
+        /// </summary>
+        /// <remarks>
+        /// O Status da Categoria deverá ser 1 - Ativo ou 0 - Inativo
+        /// </remarks>
+        /// <param CodCategoria="Codigo"></param>
+        /// <returns>Um registro de Categoria foi Alterado</returns>
+        /// <response code="201">Categoria Incluida com Sucesso</response>
+        /// <response code="400">Erro na Validação dos campos. Verifique os parametros.</response>  
+        /// <response code="409">Já existe uma Categoria incluida para esse código.</response>  
         [HttpPost]
         public async Task<ActionResult<Categoria>> PostCategoria(Categoria categoria)
         {
             _context.Categoria.Add(categoria);
-            await _context.SaveChangesAsync();
+            categoria.DataInclusao = DateTime.Today; 
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (CategoriaExists(categoria.CodCategoria))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-            return CreatedAtAction("GetCategoria", new { id = categoria.IdCategoria }, categoria);
+            return CreatedAtAction("GetCategoria", new { id = categoria.CodCategoria }, categoria);
         }
-
+        /// <summary>
+        /// Exclui uma categoria
+        /// </summary>
+        /// <remarks>
+        /// O Status da Categoria deverá ser 1 - Ativo ou 0 - Inativo
+        /// </remarks>
+        /// <param CodCategoria="Codigo"></param>
+        /// <returns>Um registro de Categoria foi Alterado</returns>
+        /// <response code="201">Categoria Excluida com Sucesso</response>
+        /// <response code="404">Categoria não encontrada</response>  
+ 
         // DELETE: api/Categorias/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Categoria>> DeleteCategoria(int id)
+        [HttpDelete("{CodCategoria}")]
+        public async Task<ActionResult<Categoria>> DeleteCategoria(int CodCategoria)
         {
-            var categoria = await _context.Categoria.FindAsync(id);
+            var categoria = await _context.Categoria.FindAsync(CodCategoria);
             if (categoria == null)
             {
                 return NotFound();
@@ -102,9 +166,9 @@ namespace Estoque.WebAPI.Controllers
             return categoria;
         }
 
-        private bool CategoriaExists(int id)
+        private bool CategoriaExists(int CodCategoria)
         {
-            return _context.Categoria.Any(e => e.IdCategoria == id);
+            return _context.Categoria.Any(e => e.CodCategoria == CodCategoria);
         }
     }
 }

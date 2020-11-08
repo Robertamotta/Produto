@@ -1,26 +1,35 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Estoque.WebAPI.Models
 {
-    public class Produto
+    public partial class Produto
     {
-
-        [Key]
+        public Produto()
+        {
+            Movimento = new HashSet<Movimento>();
+        }
+        [Required]
         public int CodProduto { get; set; }
+        [StringLength(40, MinimumLength = 3)]
+        [Required]
         public string Nome { get; set; }
-        public int Quantidade { get; set; }
-        public double ValorCusto { get; set; }
-        public double ValorVenda { get; set; }
-        public string Categoria { get; set; }
-        private Categoria Cat { get; set; } = new Categoria();
-
+        public int? Quantidade { get; set; }
+        [Range(0, 100)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        public double? ValorCusto { get; set; }
+        [Range(0, 100)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        public double? ValorVenda { get; set; }
+        public int CodCategoria { get; set; }
+        [JsonIgnore]
+        public virtual Categoria CodCategoriaNavigation { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Movimento> Movimento { get; set; }
     }
-
-
 }
