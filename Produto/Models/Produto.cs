@@ -19,12 +19,8 @@ namespace Estoque.WebAPI.Models
         public string Nome { get; set; }
         public int? Quantidade { get; set; }
         [Range(0, 100)]
-        [DataType(DataType.Currency)]
-        [Column(TypeName = "decimal(18, 2)")]
         public double? ValorCusto { get; set; }
         [Range(0, 100)]
-        [DataType(DataType.Currency)]
-        [Column(TypeName = "decimal(18, 2)")]
         public double? ValorVenda { get; set; }
         public int CodCategoria { get; set; }
         [JsonIgnore]

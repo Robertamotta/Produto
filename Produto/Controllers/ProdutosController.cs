@@ -73,6 +73,11 @@ namespace Estoque.WebAPI.Controllers
             {
                 return BadRequest();
             }
+            if (!CategoriaAtiva(produto.CodCategoria))
+            {
+                return BadRequest();
+            }
+
 
             _context.Entry(produto).State = EntityState.Modified;
 
@@ -116,6 +121,11 @@ namespace Estoque.WebAPI.Controllers
             _context.Produto.Add(produto);
             try
             {
+                if (!CategoriaAtiva(produto.CodCategoria))
+                {
+                    return BadRequest();
+                }
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
@@ -164,9 +174,13 @@ namespace Estoque.WebAPI.Controllers
             return produto;
         }
 
-        private bool ProdutoExists(int id)
+        public bool ProdutoExists(int id)
         {
             return _context.Produto.Any(e => e.CodProduto == id);
+        }
+        public bool CategoriaAtiva(int codCategoria)
+        {
+            return _context.Categoria.Any(e => e.CodCategoria == codCategoria && e.Status == 1);
         }
     }
 }
