@@ -11,11 +11,11 @@ namespace Estoque.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MovimentosController : ControllerBase
+    public class MovimentoController : ControllerBase
     {
         private readonly EstoqueInfrastruture_dbContext _context;
 
-        public MovimentosController(EstoqueInfrastruture_dbContext context)
+        public MovimentoController(EstoqueInfrastruture_dbContext context)
         {
             _context = context;
         }
@@ -182,11 +182,11 @@ namespace Estoque.WebAPI.Controllers
             return _context.Movimento.Any(e => e.IdMovimento == id);
         }
 
-        public bool UsuarioAtivo(int id)
+        private bool UsuarioAtivo(int id)
         {
             return _context.Usuario.Any(e => e.IdUsuario == id && e.StatusUsuario == 1);
         }
-        public bool CategoriaAtiva(int codCategoria)
+        private bool CategoriaAtiva(int codCategoria)
         {
             return _context.Categoria.Any(e => e.CodCategoria == codCategoria && e.Status == 1);
         }

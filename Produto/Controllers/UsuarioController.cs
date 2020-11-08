@@ -11,11 +11,11 @@ namespace Estoque.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuariosController : ControllerBase
+    public class UsuarioController : ControllerBase
     {
         private readonly EstoqueInfrastruture_dbContext _context;
 
-        public UsuariosController(EstoqueInfrastruture_dbContext context)
+        public UsuarioController(EstoqueInfrastruture_dbContext context)
         {
             _context = context;
         }

@@ -11,11 +11,11 @@ namespace Estoque.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProdutosController : ControllerBase
+    public class ProdutoController : ControllerBase
     {
         private readonly EstoqueInfrastruture_dbContext _context;
 
-        public ProdutosController(EstoqueInfrastruture_dbContext context)
+        public ProdutoController(EstoqueInfrastruture_dbContext context)
         {
             _context = context;
         }
@@ -174,11 +174,11 @@ namespace Estoque.WebAPI.Controllers
             return produto;
         }
 
-        public bool ProdutoExists(int id)
+        private bool ProdutoExists(int id)
         {
             return _context.Produto.Any(e => e.CodProduto == id);
         }
-        public bool CategoriaAtiva(int codCategoria)
+        private bool CategoriaAtiva(int codCategoria)
         {
             return _context.Categoria.Any(e => e.CodCategoria == codCategoria && e.Status == 1);
         }
