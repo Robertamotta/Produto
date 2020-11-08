@@ -6,11 +6,7 @@ namespace Estoque.WebAPI.Tests
 {
     public class TestEstoqueWebAPIContext : EstoqueInfrastruture_dbContext
     {
-        public TestEstoqueWebAPIContext() => Products = new TestProductDbSet();
-
-        public DbSet<Produto> Products { get; set; }
-
-        public int SaveChanges()
+         public int SaveChanges()
         {
             return 0;
         }

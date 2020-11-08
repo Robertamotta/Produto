@@ -13,6 +13,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Estoque.WebAPI.Controllers
 {
@@ -21,10 +23,19 @@ namespace Estoque.WebAPI.Controllers
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
         public IServiceCollection Conn { get; private set; }
+
+        public static void Register(HttpConfiguration config)
+        {
+            // New code
+            config.EnableSystemDiagnosticsTracing();
+
+            // Other configuration code not shown.
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -89,8 +100,7 @@ namespace Estoque.WebAPI.Controllers
             //services.AddDbContext<ProdutoContext>(options =>
             //        options.UseSqlServer(Configuration.GetConnectionString("ProdutoContext")));
 
-
-        }
+         }
 
         private void IncludeXmlComments(string xmlPath)
         {
@@ -99,7 +109,7 @@ namespace Estoque.WebAPI.Controllers
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -107,6 +117,8 @@ namespace Estoque.WebAPI.Controllers
             }
 
             app.UseHttpsRedirection();
+
+            loggerFactory.CreateLogger("Debug");
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
