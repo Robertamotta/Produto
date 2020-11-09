@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Estoque.WebAPI", "Produto\Estoque.WebAPI.csproj", "{243A40C7-3E3D-4B3E-803D-68F060F997DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestEstoque", "UnitTestEstoque\UnitTestEstoque.csproj", "{7057024D-0DAF-418B-966B-798416560833}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estoque.Test", "Estoque.Teste\Estoque.Test.csproj", "{8EC5CAE7-E194-4B12-A644-69D5C37DF778}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{243A40C7-3E3D-4B3E-803D-68F060F997DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{243A40C7-3E3D-4B3E-803D-68F060F997DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{243A40C7-3E3D-4B3E-803D-68F060F997DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7057024D-0DAF-418B-966B-798416560833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7057024D-0DAF-418B-966B-798416560833}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7057024D-0DAF-418B-966B-798416560833}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7057024D-0DAF-418B-966B-798416560833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EC5CAE7-E194-4B12-A644-69D5C37DF778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EC5CAE7-E194-4B12-A644-69D5C37DF778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EC5CAE7-E194-4B12-A644-69D5C37DF778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EC5CAE7-E194-4B12-A644-69D5C37DF778}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
